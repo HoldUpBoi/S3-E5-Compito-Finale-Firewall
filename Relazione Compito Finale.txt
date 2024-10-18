@@ -1,0 +1,129 @@
+--- Relazione Compito Finale ---
+
+La rete è strutturata in tre zone principali (Internet, DMZ, rete interna), con un firewall 
+perimetrale e un sistema di rilevamento e prevenzione delle intrusioni (IDS/IPS) per migliorare
+la sicurezza. Di seguito i dettagli:
+
+    -- Zona Internet
+
+    Questa zona rappresenta il traffico pubblico esterno e viene simbolicamente rappresentata 
+    da un'icona cloud. Internet è il punto di partenza da cui proviene il traffico esterno, 
+    che accede ai servizi nella DMZ, come il server web o il server di posta. 
+    
+    
+    -- Zona DMZ (Demilitarized Zone)
+
+    La DMZ è una rete di perimetro accessibile sia da Internet che dalla rete interna, 
+    con forti controlli di sicurezza. In questa zona vengono ospitati servizi esposti 
+    pubblicamente:
+
+    Server web HTTP: utilizzato per ospitare applicazioni o siti web.
+
+    Server di posta SMTP: gestisce l'invio e la ricezione delle email. 
+    
+    Questi servizi sono accessibili da Internet e quindi vulnerabili a possibili attacchi 
+    esterni. La DMZ funge da "buffer" tra Internet e la rete interna, riducendo il rischio 
+    di attacchi diretti alla rete interna.
+
+
+    -- Rete interna
+
+    È la parte più sicura e protetta della rete, accessibile solo a utenti e dispositivi 
+    autorizzati. Contiene risorse aziendali critiche, come un: 
+    
+    Server o NAS (Network Attached Storage): utilizzato per archiviare file e dati sensibili, 
+    accessibile solo dalla rete interna e non esposto direttamente a Internet.
+
+    Nessun traffico non autorizzato da Internet può raggiungere direttamente la rete interna.
+
+
+    -- Firewall perimetrale
+
+    Il firewall si trova tra le tre zone (Internet, DMZ e rete interna). Il suo compito è 
+    filtrare il traffico in base a regole predefinite, proteggendo le diverse sezioni della 
+    rete.
+
+        -- Regole del firewall:
+        
+        Tra Internet e DMZ: il traffico HTTP/HTTPS per il server web e SMTP per il server di 
+        posta è consentito; tutto il resto è bloccato. 
+    
+        Tra DMZ e rete interna: solo traffico amministrativo e gestione dei server è consentito,
+        bloccando il resto.
+
+        Tra rete interna e Internet: il traffico interno può accedere a Internet, ma in maniera 
+        controllata e con regole restrittive per evitare fughe di dati.
+
+
+    -- Aggiunta di IDS/IPS
+
+    L'integrazione di un sistema di rilevamento e prevenzione delle intrusioni (IDS/IPS) 
+    migliora la sicurezza della rete monitorando e prevenendo attacchi sospetti.
+
+        -- IPS tra Internet e Firewall:
+
+        Un IPS (Intrusion Prevention System) è posizionato tra Internet e il firewall 
+        perimetrale. Scansiona tutto il traffico proveniente da Internet e blocca attivamente 
+        eventuali attacchi, come attacchi DDoS, malware o tentativi di SQL injection. Questo 
+        dispositivo agisce preventivamente, garantendo che solo traffico legittimo passi al 
+        firewall.
+
+        -- IDS tra la DMZ e la rete interna:
+
+        Un IDS (Intrusion Detection System) è posizionato tra la DMZ e la rete interna. 
+        Monitora il traffico che esce dalla DMZ e che tenta di raggiungere la rete interna. 
+        Se un attaccante riuscisse a compromettere un server nella DMZ, l'IDS rileverebbe 
+        eventuali movimenti laterali o attacchi verso la rete interna. A differenza dell'IPS, 
+        l'IDS non blocca il traffico, ma genera allarmi per consentire una risposta tempestiva 
+        da parte degli amministratori.
+
+    -- Schema della rete
+
+    L'architettura della rete aggiornata può essere riassunta come segue:
+
+    Internet → IPS → Firewall perimetrale → DMZ (Server Web, Server SMTP) → IDS → Firewall → 
+    Rete interna (Server/NAS)
+
+
+    -- Spiegazione delle scelte
+    
+        -- Firewall perimetrale:
+
+        Il firewall perimetrale è fondamentale per segmentare la rete in zone isolate con 
+        livelli di accesso differenti. Permette solo traffico strettamente autorizzato tra le 
+        zone.
+
+        Protegge la rete interna da attacchi diretti e garantisce che solo traffico legittimo 
+        possa raggiungere i servizi esposti nella DMZ.
+
+        -- IPS tra Internet e Firewall:
+
+        L'IPS blocca attacchi provenienti da Internet prima che raggiungano i server DMZ, 
+        proteggendo il perimetro della rete.
+
+        Prevenire attacchi noti in tempo reale riduce notevolmente i rischi di compromettere i 
+        server web o di posta elettronica.
+
+        -- IDS tra DMZ e rete interna:
+
+        Il posizionamento dell'IDS tra DMZ e rete interna consente di monitorare attività 
+        sospette e movimenti laterali in caso di compromissione dei server della DMZ. Essendo 
+        passivo, non blocca il traffico, ma permette di intervenire rapidamente in caso di 
+        tentativi di accesso alla rete interna.
+        
+    -- Vantaggi della soluzione
+
+        -- Difesa stratificata: 
+        
+        ogni livello (Firewall, IDS, IPS) garantisce una protezione multilivello contro minacce 
+        esterne e interne.
+
+        -- Minimizzazione dell'esposizione: 
+        
+        i server critici come il NAS o altri dati sensibili restano protetti nella rete interna, 
+        isolati da Internet.
+
+        -- Risposta tempestiva: 
+        
+        l'IDS fornisce visibilità sui tentativi di attacco, consentendo agli amministratori di 
+        agire prima che un'intrusione possa danneggiare la rete.
